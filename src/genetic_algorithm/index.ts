@@ -12,6 +12,8 @@ export class GeneticAlgorithm<Genotype> {
 
 	constructor(options: GeneticAlgorithmOptions<Genotype>) {
 		this.populationOptions = options;
+
+		this.init();
 	}
 
 	init() {

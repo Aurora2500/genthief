@@ -8,7 +8,7 @@ export interface GeneticAlgorithmOptions<Genotype> {
 	fitness: FitnessFunction<Genotype>;
 	populationSize: number;
 	init: InitialPopulationFunction<Genotype>;
-  selection: SelectionFunction<Genotype>;
+	selection: SelectionFunction<Genotype>;
 	crossover: CrossoverFunction<Genotype>;
 	mutation: MutationFunction<Genotype>;
 }
