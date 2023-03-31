@@ -8,7 +8,7 @@ export class GeneticAlgorithm<Genotype> {
 	currPopulation: Genotype[] = [];
 	populationFitness: number[] = [];
 
-	genData: GenerationData<Genotype>[] = [];
+	history: GenerationData<Genotype>[] = [];
 
 	constructor(options: GeneticAlgorithmOptions<Genotype>) {
 		this.populationOptions = options;
@@ -26,7 +26,7 @@ export class GeneticAlgorithm<Genotype> {
 			best_genotype: this.bestGenotype,
 		};
 
-		this.genData = [data];
+		this.history = [data];
 	}
 
 	iterate() {
@@ -42,6 +42,11 @@ export class GeneticAlgorithm<Genotype> {
 
 		this.currPopulation = newPopulation;
 		this.populationFitness = this.currPopulation.map(fitness);
+		this.history.push({
+			top_fitness: Math.max(...this.populationFitness),
+			mean_fitness: this.populationFitness.reduce((a, b) => a + b, 0) / this.populationFitness.length,
+			best_genotype: this.bestGenotype,
+		});
 	}
 
 	get bestGenotype() {
@@ -50,6 +55,6 @@ export class GeneticAlgorithm<Genotype> {
 	}
 
 	get generation() {
-		return this.genData.length;
+		return this.history.length;
 	}
 }
