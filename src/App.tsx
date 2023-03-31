@@ -1,11 +1,11 @@
 import { AppBar, Button, Container, Paper, Toolbar, Typography } from "@mui/material";
-import { GenerationData, GeneticAlgorithm, GeneticAlgorithmOptions, roulette_wheel_selection } from "genetic_algorithm";
+import { createGeneticAlgorithm, GenerationData, GeneticAlgorithm, GeneticAlgorithmOptions, nextGeneration, roulette_wheel_selection } from "genetic_algorithm";
 import { generate_items } from "item_generator";
 import { fitness_factory, crossover, Situation, mutation_factory, initialize_population } from "knapsack";
 import React, { useState } from "react";
 import { Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 
-const transform_history = (history: GenerationData<boolean[]>[]): { generation: number, max: number, mean: number}[] => history.map(({top_fitness:max, mean_fitness:mean}, i) => ({ generation: i+1, max, mean }));
+const transform_history = (history: GenerationData<boolean[]>[]): { generation: number, max: number, mean: number}[] => history.map(({max_fitness:max, mean_fitness:mean}, i) => ({ generation: i+1, max, mean }));
 
 function App() {
 	const [situation, setSituation] = useState<Situation>({
@@ -20,7 +20,7 @@ function App() {
 		selection: roulette_wheel_selection,
 		init: initialize_population(situation.items.length) 
 	});
-	const [geneticAlgorithm, setGeneticAlgorithm] = useState<GeneticAlgorithm<boolean[]>>(new GeneticAlgorithm(options));
+	const [geneticAlgorithm, setGeneticAlgorithm] = useState<GeneticAlgorithm<boolean[]>>(createGeneticAlgorithm(options));
 
 	return (
 		<>
@@ -32,7 +32,7 @@ function App() {
 			<Container>
 				<Paper sx={{mt: 5, p: 3}}>
 					<Typography variant="h4">Current generation</Typography>
-					<Typography>generation {geneticAlgorithm.generation}</Typography>
+					<Typography>generation {geneticAlgorithm.history.length}</Typography>
 					<LineChart width={600} height={300}
 						data={transform_history(geneticAlgorithm.history)}
 					>
@@ -46,7 +46,7 @@ function App() {
 						/>
 					</LineChart>
 
-					<Button variant="contained" onClick={() => {geneticAlgorithm.iterate(); setGeneticAlgorithm(geneticAlgorithm);}}>Next generation</Button>
+					<Button variant="contained" onClick={() => setGeneticAlgorithm(ga => nextGeneration(ga))}>Next generation</Button>
 				</Paper>
 			</Container>
 		</>
