@@ -1,3 +1,4 @@
+import { argsort } from "utils";
 import type { GeneticAlgorithm, GeneticAlgorithmOptions, GenerationData } from "./types";
 
 export const createGeneticAlgorithm = <Genotype>(options: GeneticAlgorithmOptions<Genotype>): GeneticAlgorithm<Genotype> => {
@@ -39,12 +40,13 @@ export const nextGeneration = <Genotype>(ga: GeneticAlgorithm<Genotype>): Geneti
 };
 
 export const agregateData = <Genotype>(population: Genotype[], fitness: number[]): GenerationData<Genotype> => {
-	const max_fitness = Math.max(...fitness);
+	const fitness_order = argsort(fitness);
+	const max_fitness = fitness[fitness_order[fitness_order.length - 1]];
 	const mean_fitness = fitness.reduce((a, b) => a + b, 0) / fitness.length;
-	const best_genotype = population[fitness.indexOf(max_fitness)];
+	const best_genotypes = fitness_order.slice(-5).reverse().map((index) => population[index]);
 	return {
 		max_fitness,
 		mean_fitness,
-		best_genotype,
+		best_genotypes,
 	};
 };

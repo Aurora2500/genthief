@@ -16,7 +16,7 @@ export type GeneticAlgorithmOptions<Genotype> = {
 export type GenerationData<Genotype> = {
 	max_fitness: number;
 	mean_fitness: number;
-	best_genotype: Genotype;
+	best_genotypes: Genotype[];
 }
 
 export type History<Genotype> = GenerationData<Genotype>[];

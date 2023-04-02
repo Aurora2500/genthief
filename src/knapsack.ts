@@ -60,3 +60,5 @@ export const initialize_population = (length: number) => (size: number): boolean
 	}
 	return population;
 };
+
+export const render_genotype = (genotype: boolean[]): string => genotype.reduce((str, gene) => str + (gene ? "1" : "0"), "");

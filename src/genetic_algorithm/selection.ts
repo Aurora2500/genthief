@@ -1,4 +1,4 @@
-import { normalize } from "./util";
+import { normalize } from "utils";
 
 export const roulette_wheel_selection = <T>(population: T[], fitness: number[]): T => {
 	const normalized_fitness = normalize(fitness);
